@@ -33,7 +33,7 @@ Current Milestone: Day 1 Setup
 
 ## CISSP Learning Journal
 
-Day 1
+## Day 1
 Completed the development environment setup.
 
 Key activities
@@ -55,3 +55,17 @@ Environment validation is important before development begins.
 Version control should be established before writing code.
 Documentation should evolve together with the project.
 Small, controlled changes are easier to troubleshoot than large changes.
+
+### Domain 3 - Security Architecture and Engineering
+#### Lab 1 - CIA Triad Simulator
+##### Objective
+Demonstrate the impact of losing:
+ - Confidentiality
+- Integrity
+- Availability
+##### Scenario: Farm_Expenses_2026.xlsx
+- Confidentiality: Unauthorised viewing of data
+- Integrity: Modification of financial records
+- Availability: Loss of access to records
+
+**Status**: Design Phase
