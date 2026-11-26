@@ -14,6 +14,9 @@ st.set_page_config(
 # SESSION STATE
 # ==================================================
 
+if "selected" not in st.session_state:
+    st.session_state.selected = "conf"
+
 if "confidentiality_broken" not in st.session_state:
     st.session_state.confidentiality_broken = False
 
@@ -28,28 +31,11 @@ if "availability_broken" not in st.session_state:
 # ==================================================
 
 st.title("🔐 CISSP Practical Lab")
-
 st.header("Domain 3 - Security Architecture & Engineering")
-
-st.subheader("Lab 1 - CIA Triad Simulator")
-
-with st.expander("🎯 Learning Goal", expanded=False):
-    st.write("""
-You are a Security Architect at Goatify.
-
-Observe the impact when:
-
-🔒 Confidentiality fails
-
-🛡 Integrity fails
-
-⚡ Availability fails
-
-and understand how real security incidents affect businesses.
-""")
+st.subheader("Lab 1 - CIA + Non-Repudiation Simulator")
 
 # ==================================================
-# SECURITY SCORE
+# SCORE
 # ==================================================
 
 score = 3
@@ -66,98 +52,131 @@ if st.session_state.availability_broken:
 st.metric("Security Posture Score", f"{score}/3 Secure")
 
 # ==================================================
-# STATUS DASHBOARD
+# STATUS BAR
 # ==================================================
 
-s1, s2, s3 = st.columns(3)
+status = []
 
-with s1:
-    if st.session_state.confidentiality_broken:
-        st.error("🔒 Confidentiality")
-    else:
-        st.success("🔒 Confidentiality")
-
-with s2:
-    if st.session_state.integrity_broken:
-        st.error("🛡 Integrity")
-    else:
-        st.success("🛡 Integrity")
-
-with s3:
-    if st.session_state.availability_broken:
-        st.error("⚡ Availability")
-    else:
-        st.success("⚡ Availability")
-
-# ==================================================
-# RESET BUTTON
-# ==================================================
-
-if st.button("🔄 Reset Simulation"):
-    st.session_state.confidentiality_broken = False
-    st.session_state.integrity_broken = False
-    st.session_state.availability_broken = False
-    st.rerun()
-
-st.divider()
-
-# ==================================================
-# BUSINESS SCENARIO
-# ==================================================
-
-st.warning("""
-GOATIFY PAYROLL MANAGEMENT SYSTEM
-
-Employee : John Doe
-Employee ID : GF-10452
-
-Data Classification : Confidential
-
-This system stores employee salaries,
-bonus information and payroll records.
-
-Use the simulations below to understand CIA Triad failures.
-""")
-
-st.divider()
-
-# ==================================================
-# TABS
-# ==================================================
-
-tab1, tab2, tab3 = st.tabs(
-    [
-        "🔒 Confidentiality",
-        "🛡 Integrity",
-        "⚡ Availability"
-    ]
+status.append(
+    "🔴 Confidentiality"
+    if st.session_state.confidentiality_broken
+    else "🟢 Confidentiality"
 )
+
+status.append(
+    "🔴 Integrity"
+    if st.session_state.integrity_broken
+    else "🟢 Integrity"
+)
+
+status.append(
+    "🔴 Availability"
+    if st.session_state.availability_broken
+    else "🟢 Availability"
+)
+
+st.info(" | ".join(status))
+
+# ==================================================
+# RESET
+# ==================================================
+
+col_reset, col_empty = st.columns([1, 5])
+
+with col_reset:
+    if st.button("🔄 Reset"):
+        st.session_state.confidentiality_broken = False
+        st.session_state.integrity_broken = False
+        st.session_state.availability_broken = False
+        st.rerun()
+
+# ==================================================
+# GOATIFY BANNER
+# ==================================================
+
+st.caption(
+    "🏢 Goatify Payroll System | "
+    "Employee: John Doe | "
+    "ID: GF-10452 | "
+    "Classification: Confidential"
+)
+
+st.divider()
+
+# ==================================================
+# SECURITY CARDS
+# ==================================================
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+
+    conf_status = (
+        "Compromised"
+        if st.session_state.confidentiality_broken
+        else "Protected"
+    )
+
+    if st.button(
+        f"🔒\n\nConfidentiality\n\n{conf_status}",
+        use_container_width=True
+    ):
+        st.session_state.selected = "conf"
+
+with col2:
+
+    int_status = (
+        "Compromised"
+        if st.session_state.integrity_broken
+        else "Trusted"
+    )
+
+    if st.button(
+        f"🛡\n\nIntegrity\n\n{int_status}",
+        use_container_width=True
+    ):
+        st.session_state.selected = "int"
+
+with col3:
+
+    avail_status = (
+        "Offline"
+        if st.session_state.availability_broken
+        else "Online"
+    )
+
+    if st.button(
+        f"⚡\n\nAvailability\n\n{avail_status}",
+        use_container_width=True
+    ):
+        st.session_state.selected = "avail"
+
+with col4:
+
+    if st.button(
+        "✍\n\nNon-Repudiation\n\nVerified",
+        use_container_width=True
+    ):
+        st.session_state.selected = "nr"
+
+st.divider()
 
 # ==================================================
 # CONFIDENTIALITY
 # ==================================================
 
-with tab1:
+if st.session_state.selected == "conf":
 
-    st.subheader("Confidentiality Breach Simulation")
+    st.subheader("🔒 Confidentiality")
 
-    if st.button(
-        "Launch Confidentiality Breach",
-        key="conf_btn"
-    ):
+    if st.button("Launch Confidentiality Breach"):
+
         st.session_state.confidentiality_broken = True
+        st.rerun()
 
     if not st.session_state.confidentiality_broken:
 
-        st.success("✅ Payroll Record Protected")
-
-        st.info("""
-Status: Protected
-
-Contents Hidden
-
-Only authorised users can access payroll data.
-""")
+        st.success("✅ Payroll records are protected.")
 
     else:
 
@@ -175,75 +194,56 @@ National ID   : XX123456
         st.warning("""
 Business Impact
 
-• Sensitive payroll information exposed
+• Sensitive payroll data exposed
 
-• Privacy breach
+• Privacy violation
 
 • Identity theft risk
 
-• Employee confidence reduced
+• Employee trust reduced
 """)
 
         st.success("""
-Recommended Controls
+Controls
 
 ✅ Encryption
 
-✅ Role Based Access Control (RBAC)
+✅ RBAC
 
-✅ Multi-Factor Authentication (MFA)
+✅ MFA
 """)
 
-        if st.button(
-            "📰 Real World Incident",
-            key="conf_incident"
-        ):
+        with st.expander("📰 Real World Incident"):
 
-            st.info("""
-EQUIFAX DATA BREACH (2017)
+            st.write("""
+Equifax Data Breach (2017)
 
-Attackers exploited an unpatched vulnerability.
-
-Impact:
-
-• Personal information exposed
-
-• Millions of individuals affected
-
-• Major reputational damage
+Sensitive personal information of millions
+of individuals was exposed.
 
 CIA Principle Impacted:
-
-🔒 Confidentiality
-
-Connection to Goatify:
-
-Just like John Doe's payroll information became visible,
-customer records were exposed to unauthorised parties.
+Confidentiality
 """)
 
 # ==================================================
 # INTEGRITY
 # ==================================================
 
-with tab2:
+elif st.session_state.selected == "int":
 
-    st.subheader("Integrity Breach Simulation")
+    st.subheader("🛡 Integrity")
 
-    if st.button(
-        "Launch Integrity Breach",
-        key="int_btn"
-    ):
+    if st.button("Launch Integrity Breach"):
+
         st.session_state.integrity_broken = True
+        st.rerun()
 
     if not st.session_state.integrity_broken:
 
-        st.success("✅ Integrity Verified")
+        st.success("✅ Record integrity verified.")
 
-        st.info("""
-Hash Verification : VALID
-
-Employee Record Trusted
+        st.code("""
+Hash Status : VALID
 
 Stored Hash : A84F7B92
 """)
@@ -252,18 +252,24 @@ Stored Hash : A84F7B92
 
         st.error("⚠ Integrity Compromised")
 
-        st.code("""
-ORIGINAL RECORD
+        c1, c2 = st.columns(2)
 
+        with c1:
+
+            st.write("### Original Record")
+
+            st.code("""
 Employee      : John Doe
 Salary        : £250,000
 Bonus         : £25,000
 Bank Account  : XXXX7821
 """)
 
-        st.code("""
-MODIFIED RECORD
+        with c2:
 
+            st.write("### Modified Record")
+
+            st.code("""
 Employee      : John Doe
 Salary        : £500,000
 Bonus         : £250,000
@@ -271,31 +277,28 @@ Bank Account  : XXXX9999
 """)
 
         st.code("""
-HASH VERIFICATION
+Hash Status : FAILED
 
 Stored Hash : A84F7B92
-
 Current Hash: C76D11A1
-
-Status      : FAILED
 """)
 
         st.warning("""
 Business Impact
 
-• Payroll information altered
+• Salary altered
 
-• Incorrect salary payments possible
+• Bonus altered
 
-• Financial loss
-
-• Audit findings likely
+• Bank details changed
 
 • Records can no longer be trusted
+
+• Audit findings likely
 """)
 
         st.success("""
-Recommended Controls
+Controls
 
 ✅ SHA-256 Hashing
 
@@ -303,70 +306,37 @@ Recommended Controls
 
 ✅ Audit Trails
 
-✅ Change Control
+✅ Change Management
 """)
 
-        if st.button(
-            "📰 Real World Incident",
-            key="int_incident"
-        ):
+        with st.expander("📰 Real World Incident"):
 
-            st.info("""
-PAYROLL FRAUD SCENARIO
+            st.write("""
+Payroll Fraud Scenario
 
-Integrity failures occur when business
-records are modified without authorisation.
-
-Examples:
-
-• Salary changes
-
-• Bank account changes
-
-• Bonus manipulation
+Unauthorised modification of payroll records
+can result in financial loss and audit findings.
 
 CIA Principle Impacted:
-
-🛡 Integrity
-
-Connection to Goatify:
-
-John Doe's salary, bonus and banking
-information were altered.
-
-Although the data is visible,
-it can no longer be trusted.
+Integrity
 """)
 
 # ==================================================
 # AVAILABILITY
 # ==================================================
 
-with tab3:
+elif st.session_state.selected == "avail":
 
-    st.subheader("Availability Failure Simulation")
+    st.subheader("⚡ Availability")
 
-    if st.button(
-        "Launch Availability Failure",
-        key="avail_btn"
-    ):
+    if st.button("Launch Availability Failure"):
+
         st.session_state.availability_broken = True
+        st.rerun()
 
     if not st.session_state.availability_broken:
 
-        st.success("✅ Payroll Platform Available")
-
-        st.info("""
-System Status : ONLINE
-
-Employees can:
-
-• View payslips
-
-• Download tax documents
-
-• Verify salary payments
-""")
+        st.success("✅ Goatify payroll platform online.")
 
     else:
 
@@ -392,56 +362,96 @@ John Doe did not receive salary.
 Employees cannot:
 
 • View payslips
+• Download tax documents
+• Verify payment status
 
-• Download tax records
-
-• Verify payments
-
-• Access payroll portal
-
-Business operations are disrupted.
+Operations disrupted.
 """)
 
         st.success("""
-Recommended Controls
+Controls
 
-✅ Backups
+✅ Backup Systems
 
 ✅ Disaster Recovery
 
-✅ High Availability Design
+✅ High Availability
 
 ✅ Redundant Infrastructure
 """)
 
-        if st.button(
-            "📰 Real World Incident",
-            key="avail_incident"
-        ):
+        with st.expander("📰 Real World Incident"):
 
-            st.info("""
-CROWDSTRIKE OUTAGE (2024)
+            st.write("""
+CrowdStrike Outage (2024)
 
-A faulty update caused widespread
-Windows system failures.
-
-Impact:
-
-• Airlines disrupted
-
-• Hospitals affected
-
-• Banking services interrupted
-
-• Millions of systems unavailable
+Millions of systems became unavailable,
+disrupting airlines, healthcare,
+banking and other services.
 
 CIA Principle Impacted:
+Availability
+""")
 
-⚡ Availability
+# ==================================================
+# NON-REPUDIATION
+# ==================================================
 
-Connection to Goatify:
+elif st.session_state.selected == "nr":
 
-Just as Goatify Payroll became unavailable,
-organisations worldwide temporarily lost
-access to critical business services.
+    st.subheader("✍ Non-Repudiation")
+
+    st.code("""
+Payroll Approval Record
+
+Employee         : John Doe
+Employee ID      : GF-10452
+
+Action           : Payroll Approved
+
+Date             : 23-Nov-2026
+Time             : 08:00
+
+Digital Signature : VERIFIED
+""")
+
+    st.info("""
+John Doe approved the payroll transaction.
+
+Because a digital signature exists:
+
+• The signer is identified
+
+• The action is verifiable
+
+• The approval cannot later be denied
+""")
+
+    st.success("""
+Controls
+
+✅ Digital Signatures
+
+✅ PKI
+
+✅ Certificates
+
+✅ Audit Logs
+""")
+
+    with st.expander("📰 Real World Usage"):
+
+        st.write("""
+Banks and financial institutions use
+digital signatures for:
+
+• Transactions
+• Contracts
+• Loan Approvals
+
+This provides:
+
+• Authentication
+• Integrity
+• Non-Repudiation
 """)
