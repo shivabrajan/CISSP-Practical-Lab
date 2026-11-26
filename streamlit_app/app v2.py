@@ -33,10 +33,11 @@ st.markdown("""
 
 div.stButton > button {
     width:100%;
-    height:90px;
+    height:110px;
     font-weight:bold;
     font-size:16px;
-    border-radius:12px;
+    border-radius:14px;
+    transition:all 0.3s ease;
 }
 
 .objective-card {
@@ -276,9 +277,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# ==================================================
+# OBJECTIVE CARDS
+# ==================================================
+
 c1, c2, c3, c4 = st.columns(4)
-
-
 
 # --------------------------------------------------
 # CONFIDENTIALITY
@@ -286,27 +289,32 @@ c1, c2, c3, c4 = st.columns(4)
 
 with c1:
 
-    bg = (
-        "#6B7280"
-        if st.session_state.selected_objective == "confidentiality"
-        else "#0F5D7A"
-    )
+    selected = st.session_state.selected_objective == "confidentiality"
+
+    bg = "#0B7DB0" if selected else "#0F5D7A"
+    border = "3px solid #38BDF8" if selected else "2px solid transparent"
+    shadow = "0 0 15px rgba(56,189,248,0.5)" if selected else "none"
 
     st.markdown(
         f"""
         <div class="objective-card"
-        style="background:{bg};">
-
+        style="
+        background:{bg};
+        border:{border};
+        box-shadow:{shadow};
+        ">
         🔒<br>
         CONFIDENTIALITY
-
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    if st.button("Select", key="conf"):
-
+    if st.button(
+        "Select",
+        key="conf_card",
+        use_container_width=True
+    ):
         st.session_state.selected_objective = "confidentiality"
         st.rerun()
 
@@ -316,27 +324,32 @@ with c1:
 
 with c2:
 
-    bg = (
-        "#6B7280"
-        if st.session_state.selected_objective == "integrity"
-        else "#D97706"
-    )
+    selected = st.session_state.selected_objective == "integrity"
+
+    bg = "#F59E0B" if selected else "#D97706"
+    border = "3px solid #FBBF24" if selected else "2px solid transparent"
+    shadow = "0 0 15px rgba(251,191,36,0.5)" if selected else "none"
 
     st.markdown(
         f"""
         <div class="objective-card"
-        style="background:{bg};">
-
+        style="
+        background:{bg};
+        border:{border};
+        box-shadow:{shadow};
+        ">
         🛡<br>
         INTEGRITY
-
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    if st.button("Select", key="int"):
-
+    if st.button(
+        "Select",
+        key="int_card",
+        use_container_width=True
+    ):
         st.session_state.selected_objective = "integrity"
         st.rerun()
 
@@ -346,27 +359,32 @@ with c2:
 
 with c3:
 
-    bg = (
-        "#6B7280"
-        if st.session_state.selected_objective == "availability"
-        else "#7E22CE"
-    )
+    selected = st.session_state.selected_objective == "availability"
+
+    bg = "#A855F7" if selected else "#7E22CE"
+    border = "3px solid #C084FC" if selected else "2px solid transparent"
+    shadow = "0 0 15px rgba(192,132,252,0.5)" if selected else "none"
 
     st.markdown(
         f"""
         <div class="objective-card"
-        style="background:{bg};">
-
+        style="
+        background:{bg};
+        border:{border};
+        box-shadow:{shadow};
+        ">
         ⚡<br>
         AVAILABILITY
-
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    if st.button("Select", key="avail"):
-
+    if st.button(
+        "Select",
+        key="avail_card",
+        use_container_width=True
+    ):
         st.session_state.selected_objective = "availability"
         st.rerun()
 
@@ -376,30 +394,34 @@ with c3:
 
 with c4:
 
-    bg = (
-        "#6B7280"
-        if st.session_state.selected_objective == "non_repudiation"
-        else "#15803D"
-    )
+    selected = st.session_state.selected_objective == "non_repudiation"
+
+    bg = "#22C55E" if selected else "#15803D"
+    border = "3px solid #4ADE80" if selected else "2px solid transparent"
+    shadow = "0 0 15px rgba(74,222,128,0.5)" if selected else "none"
 
     st.markdown(
         f"""
         <div class="objective-card"
-        style="background:{bg};">
-
+        style="
+        background:{bg};
+        border:{border};
+        box-shadow:{shadow};
+        ">
         ✍<br>
-        NON-REPUDIATION
-
+        NON‑REPUDIATION
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    if st.button("Select", key="nr"):
-
+    if st.button(
+        "Select",
+        key="nr_card",
+        use_container_width=True
+    ):
         st.session_state.selected_objective = "non_repudiation"
         st.rerun()
-
 # ==================================================
 # STATE
 # ==================================================
