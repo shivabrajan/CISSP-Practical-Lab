@@ -33,55 +33,11 @@ st.markdown("""
 
 div.stButton > button {
     width:100%;
-    height:110px;
+    height:120px;
+    border-radius:14px;
     font-weight:bold;
     font-size:16px;
-    border-radius:14px;
     transition:all 0.3s ease;
-}
-
-.objective-card {
-    padding: 14px;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: bold;
-    color: white;
-    margin-bottom: 5px;
-}
-
-.banner {
-    background: #111827;
-    padding: 16px;
-    border-radius: 12px;
-    border-left: 6px solid #3B82F6;
-    margin-bottom: 15px;
-}
-
-.panel {
-    border: 1px solid #374151;
-    border-radius: 12px;
-    padding: 15px;
-    min-height: 260px;
-}
-
-.data-panel {
-    background: #1F2937;
-}
-
-.impact-panel {
-    background: #4A3A12;
-}
-
-.controls-panel {
-    background: #123524;
-}
-
-.incident-panel {
-    background: #312E81;
-}
-
-.metric-box {
-    border-radius: 12px;
 }
 
 </style>
@@ -283,142 +239,54 @@ st.markdown(
 
 c1, c2, c3, c4 = st.columns(4)
 
-# --------------------------------------------------
-# CONFIDENTIALITY
-# --------------------------------------------------
-
 with c1:
 
-    selected = st.session_state.selected_objective == "confidentiality"
-
-    bg = "#0B7DB0" if selected else "#0F5D7A"
-    border = "3px solid #38BDF8" if selected else "2px solid transparent"
-    shadow = "0 0 15px rgba(56,189,248,0.5)" if selected else "none"
-
-    st.markdown(
-        f"""
-        <div class="objective-card"
-        style="
-        background:{bg};
-        border:{border};
-        box-shadow:{shadow};
-        ">
-        🔒<br>
-        CONFIDENTIALITY
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    label = "🔒\n\nCONFIDENTIALITY"
 
     if st.button(
-        "Select",
+        label,
         key="conf_card",
-        use_container_width=True
+        use_container_width=True,
+        type="primary" if st.session_state.selected_objective == "confidentiality" else "secondary"
     ):
         st.session_state.selected_objective = "confidentiality"
         st.rerun()
 
-# --------------------------------------------------
-# INTEGRITY
-# --------------------------------------------------
-
 with c2:
 
-    selected = st.session_state.selected_objective == "integrity"
-
-    bg = "#F59E0B" if selected else "#D97706"
-    border = "3px solid #FBBF24" if selected else "2px solid transparent"
-    shadow = "0 0 15px rgba(251,191,36,0.5)" if selected else "none"
-
-    st.markdown(
-        f"""
-        <div class="objective-card"
-        style="
-        background:{bg};
-        border:{border};
-        box-shadow:{shadow};
-        ">
-        🛡<br>
-        INTEGRITY
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    label = "🛡\n\nINTEGRITY"
 
     if st.button(
-        "Select",
+        label,
         key="int_card",
-        use_container_width=True
+        use_container_width=True,
+        type="primary" if st.session_state.selected_objective == "integrity" else "secondary"
     ):
         st.session_state.selected_objective = "integrity"
         st.rerun()
 
-# --------------------------------------------------
-# AVAILABILITY
-# --------------------------------------------------
-
 with c3:
 
-    selected = st.session_state.selected_objective == "availability"
-
-    bg = "#A855F7" if selected else "#7E22CE"
-    border = "3px solid #C084FC" if selected else "2px solid transparent"
-    shadow = "0 0 15px rgba(192,132,252,0.5)" if selected else "none"
-
-    st.markdown(
-        f"""
-        <div class="objective-card"
-        style="
-        background:{bg};
-        border:{border};
-        box-shadow:{shadow};
-        ">
-        ⚡<br>
-        AVAILABILITY
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    label = "⚡\n\nAVAILABILITY"
 
     if st.button(
-        "Select",
+        label,
         key="avail_card",
-        use_container_width=True
+        use_container_width=True,
+        type="primary" if st.session_state.selected_objective == "availability" else "secondary"
     ):
         st.session_state.selected_objective = "availability"
         st.rerun()
 
-# --------------------------------------------------
-# NON-REPUDIATION
-# --------------------------------------------------
-
 with c4:
 
-    selected = st.session_state.selected_objective == "non_repudiation"
-
-    bg = "#22C55E" if selected else "#15803D"
-    border = "3px solid #4ADE80" if selected else "2px solid transparent"
-    shadow = "0 0 15px rgba(74,222,128,0.5)" if selected else "none"
-
-    st.markdown(
-        f"""
-        <div class="objective-card"
-        style="
-        background:{bg};
-        border:{border};
-        box-shadow:{shadow};
-        ">
-        ✍<br>
-        NON‑REPUDIATION
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    label = "✍\n\nNON‑REPUDIATION"
 
     if st.button(
-        "Select",
+        label,
         key="nr_card",
-        use_container_width=True
+        use_container_width=True,
+        type="primary" if st.session_state.selected_objective == "non_repudiation" else "secondary"
     ):
         st.session_state.selected_objective = "non_repudiation"
         st.rerun()
