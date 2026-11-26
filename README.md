@@ -149,3 +149,18 @@ Students can identify:
 ### Status
 
 Design Phase
+
+## Release History
+
+### v1.0 – CIA Triad Simulator
+
+Features
+
+- Goatify enterprise business scenario
+- Employee-centric simulations using John Doe
+- Confidentiality breach simulator
+- Integrity compromise simulator
+- Availability outage simulator
+- Security posture dashboard
+- Control recommendations
+- Real-world security incident examples
